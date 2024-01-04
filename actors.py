@@ -30,6 +30,7 @@ class Paddle(pygame.Rect):
         self.width = width
         self.height = height
         self.velocity = PADDLE_VELOCITY
+        self.score = 0
 
     def move_up(self):
         self.y -= self.velocity
@@ -116,9 +117,11 @@ class Ball(pygame.Rect):
         intersectY = self.y
 
         if self.top >= SCREEN_HEIGHT or self.top <= 0:
+            self.velocity *= 1.02
             self.dir_y *= -1
         
         if self.colliderect(player):
+            self.velocity *= 1.02
             relative_intersectY = (player.y + (player.height/2)) - intersectY
             normalized_relative_intersect_y = relative_intersectY / (player.height/2)
             self.angle = radians(normalized_relative_intersect_y * 60)
@@ -127,6 +130,7 @@ class Ball(pygame.Rect):
             
 
         if self.colliderect(computer):
+            self.velocity *= 1.02
             relative_intersectY = (computer.y + (computer.height/2)) - intersectY
             normalized_relative_intersect_y = relative_intersectY / (computer.height/2) 
             self.angle = radians(normalized_relative_intersect_y * 60)
@@ -136,3 +140,5 @@ class Ball(pygame.Rect):
     def handle_movement(self):
         self.x += self.dir_x * self.velocity
         self.y += self.dir_y * self.velocity
+    
+    

@@ -8,8 +8,7 @@ pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()
 running = True
-
-#Helper functions
+game_scene = Game_Scene(screen)
 
 
 while running:
@@ -23,10 +22,10 @@ while running:
     screen.fill(SCREEN_COLOR)
 
     # RENDER YOUR GAME HERE
-    Game_Scene(screen).render()
+    game_scene.render()
 
     #HANDLE UPDATE
-    Game_Scene(screen).update()
+    game_scene.update()
 
     
   
