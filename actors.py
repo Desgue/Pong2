@@ -109,7 +109,10 @@ class Ball(pygame.Rect):
         self.dir_x = cos(self.angle)
         self.dir_y = -sin(self.angle)
 
-    def check_collision(self, player, computer):
+    def check_collision(self, 
+                        player: Player, 
+                        computer: Computer):
+        
         intersectY = self.y
 
         if self.top >= SCREEN_HEIGHT or self.top <= 0:
