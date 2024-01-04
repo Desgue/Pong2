@@ -20,18 +20,23 @@ class Game_Scene():
         
     
 
-
-    def render(self):
+    def __render_scoreboard(self):
         self.player_score=self.font.render("{}".format(self.player.score),1,pygame.Color("white"))
         self.enemy_score=self.font.render("{}".format(self.computer.score),1, pygame.Color("white")) 
         self.surface.blit(self.player_score,(SCREEN_WIDTH / 4,SCREEN_HEIGHT/4))
         self.surface.blit(self.enemy_score,(SCREEN_WIDTH - SCREEN_WIDTH / 4, SCREEN_HEIGHT/4))
+    
+    def __render_actors(self):
         pygame.draw.rect(self.surface, PADDLE_COLOR, self.player)
         pygame.draw.rect(self.surface, PADDLE_COLOR, self.computer)
         pygame.draw.rect(self.surface, BALL_COLOR, self.ball, border_radius= BALL_BORDER )
-    
-    def update(self):
 
+
+    def render(self):
+        self.__render_scoreboard()
+        self.__render_actors()
+
+    def update(self):
         self.ball.check_collision(self.player, self.computer)
         self.player.handle_movement()
         self.computer.handle_movement(self.ball)
@@ -41,8 +46,6 @@ class Game_Scene():
     def reset(self, dir: int = 1):
         self.ball = Ball()
         
-
-
     def handle_point(self,ball: Ball, player: Player, computer: Computer):
         if ball.x <= 0:
             computer.score += 1
