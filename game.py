@@ -83,10 +83,10 @@ class Ball(pygame.Rect):
         self.velocity = velocity
 
     def draw(self):
-        return pygame.draw.circle(self.surface, 
-                                  self.color, 
-                                  (self.x, self.y), 
-                                  self.radius)
+            return pygame.draw.circle(self.surface, 
+                                    self.color, 
+                                    (self.x, self.y), 
+                                    self.radius)
     def handle_movement(self):
         self.x += self.velocity
         self.y += self.velocity

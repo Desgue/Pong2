@@ -1,4 +1,5 @@
-import pygame, game
+import pygame
+from actors import Player, Computer, Ball
 
 #Constants
 SCREEN_WIDTH = 1280
@@ -6,9 +7,16 @@ SCREEN_HEIGHT = 720
 PADDLE_WIDTH = 40
 PADDLE_HEIGHT = 200
 PADDLE_COLOR = "white"
+PADDLE_VELOCITY = 5
+PADDLE_CENTER_POS = (SCREEN_HEIGHT / 2) - (PADDLE_HEIGHT / 2)
+PLAYER_LEFT_POS = 10
+COMPUTER_LEFT_POS = SCREEN_WIDTH - PADDLE_WIDTH - PLAYER_LEFT_POS
 BALL_COLOR = "white"
+BALL_WIDTH = 20
+BALL_HEIGHT = 20
 BALLX = int(SCREEN_WIDTH / 2)
 BALLY = int(SCREEN_HEIGHT / 2)
+BALL_BORDER = 8
 RADIUS = 12
 BALL_VELOCITY = 5
 
@@ -21,20 +29,12 @@ running = True
 
 
 # Game Objects
-player_model = game.Player(screen, PADDLE_WIDTH, PADDLE_HEIGHT)
-computer_model = game.Computer(screen, PADDLE_WIDTH, PADDLE_HEIGHT)
-ball_model = game.Ball(screen,
-                 color =BALL_COLOR, 
-                 x = BALLX,
-                 y= BALLY,
-                 radius = RADIUS,
-                 velocity= BALL_VELOCITY
-                 )
-
+player = Player()
+computer = Computer()
+ball = Ball()
 
 #Helper functions
 
-x = 600
 
 while running:
     # poll for events
@@ -47,16 +47,16 @@ while running:
     screen.fill("black")
 
     # RENDER YOUR GAME HERE
-    player = player_model.draw()
-    computer = computer_model.draw()
-    ball = ball_model.draw()
-    
-    player_model.handle_movement()
-    ball_model.handle_movement()
+    pygame.draw.rect(screen, PADDLE_COLOR, player)
+    pygame.draw.rect(screen, PADDLE_COLOR, computer)
+    pygame.draw.rect(screen, BALL_COLOR, ball, border_radius= BALL_BORDER )
+    player.handle_movement()
+    computer.handle_movement(ball)
+    ball.handle_movement()
+    ball.check_collision(player, computer)
 
     # Check collision
-    if ball.colliderect(computer) or ball.colliderect(player):
-        ball_model.invert_direction()
+  
 
 
     # flip() the display to put your work on screen
