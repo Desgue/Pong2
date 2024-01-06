@@ -5,20 +5,21 @@ from config import *
 class Menu_Scene():
     def __init__(self):
         self.font = pygame.font.SysFont('Arial', 56)
-        self.play_btn = pygame.image.load(PLAY_BUTTON_SM).convert_alpha()
-        self.play_btn_hover = pygame.image.load(PLAY_BUTTON_SM_HOVER).convert_alpha()
+        self.start_button = Button(image = PLAY_BUTTON_SM, hover_image = PLAY_BUTTON_SM_HOVER)
 
     def handle_events(self, events):
         for e in events:
             if e.type == pygame.KEYDOWN and (e.key == pygame.K_SPACE or e.key == pygame.K_ESCAPE):
                 self.manager.go_to(Game_Scene())  
         
+        
          
 
     def render(self, screen):
         screen.fill("black")
         self.draw_name_text(screen, (SCREEN_WIDTH / 2 , SCREEN_HEIGHT / 4))
-        self.draw_start_button(screen, (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
+        self.start_button.draw(screen, (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
+       
     
     def draw_name_text(self, screen, pos):
         game_name = self.font.render("Pong: The Remake", False, "white")
@@ -28,13 +29,15 @@ class Menu_Scene():
 
 
     def draw_start_button(self, screen, pos):
-        btn_rect = self.play_btn.get_rect()
-        btn_rect.center = pos
+        button_rect = self.start_button.get_rect()
+        button_rect.center = pos
         mouse_pos = pygame.mouse.get_pos()
-        if btn_rect.collidepoint(mouse_pos):
-            screen.blit(self.play_btn_hover, btn_rect)
+        if button_rect.collidepoint(mouse_pos):
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+            screen.blit(self.play_btn_hover, button_rect)
         else:
-            screen.blit(self.play_btn, btn_rect)
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+            screen.blit(self.start_button, button_rect)
 
         
     def update(self):

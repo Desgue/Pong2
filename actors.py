@@ -130,4 +130,30 @@ class Ball(pygame.Rect):
         self.x += self.dir_x * self.velocity
         self.y += self.dir_y * self.velocity
     
+class Button():
+    def __init__(self, image, hover_image):
+        self.image = image
+        self.hover_image = hover_image
+
     
+    def draw(self, screen: pygame.Surface, pos: tuple):
+        button =pygame.image.load(self.image).convert_alpha()
+        rect = button.get_rect()
+        rect.center = pos
+        mouse_pos = pygame.mouse.get_pos()
+
+        if rect.collidepoint(mouse_pos):
+            button = pygame.image.load(self.hover_image).convert_alpha()
+            rect = button.get_rect()
+            rect.center = pos
+            screen.blit(button, rect)
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+            
+        else:
+            screen.blit(button, rect)
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+            
+            
+    
+    def handle_click(self):
+        pass
