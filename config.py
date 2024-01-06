@@ -23,3 +23,8 @@ BALL_BORDER = 8
 RADIUS = 12
 BALL_VELOCITY = 12
 
+PLAY_BUTTON_SM = "assets/png/Buttons/Rect-Medium/PlayIcon/Default.png"
+PLAY_BUTTON_SM_HOVER = "assets/png/Buttons/Rect-Medium/PlayIcon/Hover.png"
+PLAY_BUTTON_L = "assets/png@2x/Buttons/Rect-Medium/PlayIcon/Default@2x.png"
+PLAY_BUTTON_XL = "assets/png@3x/Buttons/Rect-Medium/PlayIcon/Default@3x.png"
+
