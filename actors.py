@@ -1,17 +1,6 @@
 import pygame
 from math import cos, sin, radians
-from config import (PADDLE_WIDTH, 
-                    PADDLE_HEIGHT, 
-                    PADDLE_VELOCITY, 
-                    PLAYER_LEFT_POS, 
-                    PADDLE_CENTER_POS, 
-                    COMPUTER_LEFT_POS, 
-                    SCREEN_HEIGHT,
-                    BALLX,
-                    BALLY,
-                    BALL_WIDTH,
-                    BALL_HEIGHT,
-                    BALL_VELOCITY, SCREEN_WIDTH)
+from config import *
 
 class Paddle(pygame.Rect):
     def __init__(self,

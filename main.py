@@ -8,7 +8,7 @@ pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()
 running = True
-game_scene = Game_Scene(screen)
+manager = Scene_Manager()
 
 
 while running:
@@ -22,15 +22,10 @@ while running:
     screen.fill(SCREEN_COLOR)
 
     # RENDER YOUR GAME HERE
-    game_scene.render()
-
-    #HANDLE UPDATE
-    game_scene.update()
-
+    manager.scene.render(screen)
+    manager.scene.handle_events(pygame.event.get())
+    manager.scene.update()
     
-  
-
-
     # flip() the display to put your work on screen
     pygame.display.flip()
 
