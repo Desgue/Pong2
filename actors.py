@@ -99,6 +99,13 @@ class Ball(pygame.Rect):
         self.dir_x = cos(self.angle)
         self.dir_y = -sin(self.angle)
 
+    def reset(self):
+        self.angle = radians(0)
+        self.dir_x = cos(self.angle)
+        self.dir_y = -sin(self.angle)
+        self.velocity = BALL_VELOCITY
+        self.center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+
     def check_collision(self, 
                         player: Player, 
                         computer: Computer):
@@ -132,28 +139,34 @@ class Ball(pygame.Rect):
     
 class Button():
     def __init__(self, image, hover_image):
-        self.image = image
-        self.hover_image = hover_image
-
+        self.image_src = image
+        self.hover_image_src = hover_image
+        self.image = pygame.image.load(self.image_src).convert_alpha()
+        self.rect = self.image.get_rect()
     
     def draw(self, screen: pygame.Surface, pos: tuple):
-        button =pygame.image.load(self.image).convert_alpha()
-        rect = button.get_rect()
-        rect.center = pos
+        
+        self.rect.center = pos
         mouse_pos = pygame.mouse.get_pos()
 
-        if rect.collidepoint(mouse_pos):
-            button = pygame.image.load(self.hover_image).convert_alpha()
-            rect = button.get_rect()
-            rect.center = pos
-            screen.blit(button, rect)
+        if self.rect.collidepoint(mouse_pos):
+            self.image = pygame.image.load(self.hover_image_src).convert_alpha()
+            self.rect = self.image.get_rect()
+            self.rect.center = pos
+            screen.blit(self.image, self.rect)
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
             
         else:
-            screen.blit(button, rect)
+            self.image = pygame.image.load(self.image_src).convert_alpha()
+            self.rect = self.image.get_rect()
+            self.rect.center = pos
+            screen.blit(self.image, self.rect)
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
             
             
     
-    def handle_click(self):
-        pass
+    def clicked(self, events):
+        mouse_pos = pygame.mouse.get_pos()
+        if pygame.mouse.get_pressed()[0] and self.rect.collidepoint(mouse_pos):
+            return True
+        

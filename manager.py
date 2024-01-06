@@ -6,14 +6,14 @@ class Menu_Scene():
     def __init__(self):
         self.font = pygame.font.SysFont('Arial', 56)
         self.start_button = Button(image = PLAY_BUTTON_SM, hover_image = PLAY_BUTTON_SM_HOVER)
+        self.level0 = Game_Scene()
 
     def handle_events(self, events):
         for e in events:
             if e.type == pygame.KEYDOWN and (e.key == pygame.K_SPACE or e.key == pygame.K_ESCAPE):
                 self.manager.go_to(Game_Scene())  
-        
-        
-         
+        if self.start_button.clicked(events):
+            self.manager.go_to(self.level0)
 
     def render(self, screen):
         screen.fill("black")
@@ -26,18 +26,6 @@ class Menu_Scene():
         game_name_rect = game_name.get_rect()
         game_name_rect.center = pos
         screen.blit(game_name, game_name_rect)
-
-
-    def draw_start_button(self, screen, pos):
-        button_rect = self.start_button.get_rect()
-        button_rect.center = pos
-        mouse_pos = pygame.mouse.get_pos()
-        if button_rect.collidepoint(mouse_pos):
-            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
-            screen.blit(self.play_btn_hover, button_rect)
-        else:
-            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-            screen.blit(self.start_button, button_rect)
 
         
     def update(self):
@@ -81,18 +69,15 @@ class Game_Scene():
         self.computer.handle_movement(self.ball)
         self.ball.handle_movement()
         self.handle_point(self.ball, self.player, self.computer)
-    
-    def reset(self, dir: int = 1):
-        self.ball = Ball()
         
     def handle_point(self,ball: Ball, player: Player, computer: Computer):
         if ball.x <= 0:
             computer.score += 1
-            print("goal")
-            self.reset(-1)
+            ball.reset()
         if ball.x >= SCREEN_WIDTH:
             player.score += 1
-            self.reset()
+            ball.reset()
+
     def handle_events(self, events):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_ESCAPE]:
