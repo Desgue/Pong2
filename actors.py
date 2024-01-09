@@ -14,10 +14,7 @@ class Paddle(pygame.Rect):
                          top,
                          width,
                          height)
-        self.x = left
-        self.y = top
-        self.width = width
-        self.height = height
+        
         self.velocity = PADDLE_VELOCITY
         self.score = 0
 
@@ -44,9 +41,9 @@ class Player(Paddle):
 
     def handle_movement(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_UP] and self.top > 10:
+        if keys[pygame.K_w] and self.y > 10:
             self.move_up()
-        if keys[pygame.K_DOWN] and self.top < SCREEN_HEIGHT - self.height - 10:
+        if keys[pygame.K_s] and self.top < SCREEN_HEIGHT - self.height - 10:
             self.move_down()
 
 class Computer(Paddle):
@@ -62,22 +59,18 @@ class Computer(Paddle):
                          width,
                          height
                          )
-        self.x = left
-        self.y = top
-
     def handle_movement(self, ball: pygame.Rect):
-        middleCoord = self.y + self.height / 2
         if ball.dir_x < 0 and self.y:
-            if middleCoord < SCREEN_HEIGHT / 2:
+            if self.centery < SCREEN_HEIGHT / 2:
                 self.move_down()
-            if middleCoord > SCREEN_HEIGHT / 2:
+            if self.centery > SCREEN_HEIGHT / 2:
+                self.move_up()
+        else:
+            if self.centery < ball.centery and self.bottom < SCREEN_HEIGHT - 10 :
+                self.move_down()
+            elif self.centery > ball.centery and self.top >10:
                 self.move_up()
 
-        elif ball.dir_x > 0:
-            if ball.y < middleCoord and self.y > 10:
-                self.move_up()
-            if ball.y > middleCoord and self.y < SCREEN_HEIGHT - self.height - 10:
-                self.move_down()
 
 class Ball(pygame.Rect):
     def __init__(self,
@@ -90,20 +83,20 @@ class Ball(pygame.Rect):
                          top,
                          width,
                          height)
-        self.x = left
-        self.y = top
-        self.width = width
-        self.height = height
-        self.velocity = BALL_VELOCITY
+        
+        self.velocity = 0
         self.angle = radians(0)
         self.dir_x = cos(self.angle)
         self.dir_y = -sin(self.angle)
 
-    def reset(self):
-        self.angle = radians(0)
-        self.dir_x = cos(self.angle)
-        self.dir_y = -sin(self.angle)
+    def start(self):
         self.velocity = BALL_VELOCITY
+
+    def reset(self, direction = 1):
+        self.angle = radians(0)
+        self.dir_x = cos(self.angle) * direction
+        self.dir_y = -sin(self.angle) * direction
+        self.velocity = 0
         self.center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
     def check_collision(self, 
@@ -111,7 +104,7 @@ class Ball(pygame.Rect):
                         computer: Computer):
         
         intersectY = self.y
-
+        
         if self.top >= SCREEN_HEIGHT or self.top <= 0:
             self.velocity *= 1.02
             self.dir_y *= -1
@@ -134,11 +127,11 @@ class Ball(pygame.Rect):
             self.dir_y = sin(self.angle)
 
     def handle_movement(self):
-        self.x += self.dir_x * self.velocity
-        self.y += self.dir_y * self.velocity
+        self.x += self.dir_x * self.velocity 
+        self.y += self.dir_y * self.velocity 
     
 class Button():
-    def __init__(self, image, hover_image):
+    def __init__(self, image = None, hover_image = None):
         self.image_src = image
         self.hover_image_src = hover_image
         self.image = pygame.image.load(self.image_src).convert_alpha()
@@ -165,8 +158,9 @@ class Button():
             
             
     
-    def clicked(self, events):
+    def clicked(self):
         mouse_pos = pygame.mouse.get_pos()
-        if pygame.mouse.get_pressed()[0] and self.rect.collidepoint(mouse_pos):
-            return True
+        if pygame.mouse.get_pressed()[0]:
+            if self.rect.collidepoint(mouse_pos):
+                return True
         
