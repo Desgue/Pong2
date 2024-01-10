@@ -119,9 +119,9 @@ class Game_Scene(Scene):
             case 0:
                 self.player.height *= 0.90
             case 1: 
-                self.computer.velocity *= 1.03
+                self.computer.velocity *= 1.05
             case 2:
-                self.computer.height *= 1.05
+                self.computer.height *= 1.10
             case 3: 
                 self.ball.velocity *= 1.01
         return
