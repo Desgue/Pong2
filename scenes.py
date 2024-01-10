@@ -1,4 +1,5 @@
 import pygame
+import random
 from actors import *
 from config import *
 
@@ -49,6 +50,7 @@ class Game_Scene(Scene):
         self.player = Player()
         self.computer = Computer()
         self.ball = Ball()
+        self.final_score = 5
         self.paused = False
         self.game_over = False
         return self
@@ -75,7 +77,7 @@ class Game_Scene(Scene):
         self.player.handle_movement()
         self.computer.handle_movement(self.ball)
         self.ball.handle_movement()
-        self.handle_point(self.ball, self.player, self.computer)
+        self.handle_point()
 
 
     def draw_scoreboard(self, screen):
@@ -87,18 +89,30 @@ class Game_Scene(Scene):
     def draw_actors(self, screen):
         pygame.draw.rect(screen, PADDLE_COLOR, self.player, border_radius= 8)
         pygame.draw.rect(screen, PADDLE_COLOR, self.computer, border_radius= 8)
-        pygame.draw.rect(screen, BALL_COLOR, self.ball, border_radius= BALL_BORDER ) 
+        pygame.draw.rect(screen, BALL_COLOR, self.ball, border_radius= BALL_BORDER )
     
-        
-    def handle_point(self,ball: Ball, player: Player, computer: Computer):
-        if ball.x <= 0:
-            computer.score += 1
-            ball.reset(-1)
-            if computer.score >= 2:
+    def increase_difficulty(self):
+        rand = random.randint(0,5)
+        match rand:
+            case 0:
+                self.player.height *= 0.90
+            case 1: 
+                self.computer.velocity *= 1.03
+            case 2:
+                self.computer.height *= 1.05
+            case 3: 
+                self.ball.velocity *= 1.01
+        return
+    def handle_point(self):
+        if self.ball.x <= 0:
+            self.computer.score += 1
+            self.ball.reset(-1)
+            if self.computer.score >= self.final_score:
                 self.game_over = True
-        if ball.x >= SCREEN_WIDTH:
-            player.score += 1
-            ball.reset()
+        if self.ball.x >= SCREEN_WIDTH:
+            self.player.score += 1
+            self.ball.reset()
+            self.increase_difficulty()
 
 
 class Paused_Scene(Scene):

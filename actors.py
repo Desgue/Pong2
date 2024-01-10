@@ -83,21 +83,23 @@ class Ball(pygame.Rect):
                          top,
                          width,
                          height)
-        
-        self.velocity = 0
+
+        self.start_velocity = 0        
+        self.velocity = BALL_VELOCITY
+        self.game_started = False
         self.angle = radians(0)
         self.dir_x = cos(self.angle)
         self.dir_y = -sin(self.angle)
 
     def start(self):
-        self.velocity = BALL_VELOCITY
+        self.game_started = True
 
     def reset(self, direction = 1):
         self.angle = radians(0)
         self.dir_x = cos(self.angle) * direction
         self.dir_y = -sin(self.angle) * direction
-        self.velocity = 0
         self.center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+        self.game_started = False
 
     def check_collision(self, 
                         player: Player, 
@@ -106,11 +108,11 @@ class Ball(pygame.Rect):
         intersectY = self.y
         
         if self.top >= SCREEN_HEIGHT or self.top <= 0:
-            self.velocity *= 1.02
+            self.velocity *= 1.01
             self.dir_y *= -1
         
         if self.colliderect(player):
-            self.velocity *= 1.02
+            self.velocity *= 1.01
             relative_intersectY = (player.y + (player.height/2)) - intersectY
             normalized_relative_intersect_y = relative_intersectY / (player.height/2)
             self.angle = radians(normalized_relative_intersect_y * 60)
@@ -119,7 +121,7 @@ class Ball(pygame.Rect):
             
 
         if self.colliderect(computer):
-            self.velocity *= 1.02
+            self.velocity *= 1.01
             relative_intersectY = (computer.y + (computer.height/2)) - intersectY
             normalized_relative_intersect_y = relative_intersectY / (computer.height/2) 
             self.angle = radians(normalized_relative_intersect_y * 60)
@@ -127,8 +129,12 @@ class Ball(pygame.Rect):
             self.dir_y = sin(self.angle)
 
     def handle_movement(self):
-        self.x += self.dir_x * self.velocity 
-        self.y += self.dir_y * self.velocity 
+        if self.game_started:
+            self.x += self.dir_x * self.velocity 
+            self.y += self.dir_y * self.velocity
+        else:
+            self.x += self.dir_x * self.start_velocity
+            self.y += self.dir_y * self.start_velocity
     
 class Button():
     def __init__(self, image = None, hover_image = None):
