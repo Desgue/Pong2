@@ -134,7 +134,7 @@ class Button():
     def __init__(self, image = None, hover_image = None):
         self.image_src = image
         self.hover_image_src = hover_image
-        self.image = pygame.image.load(self.image_src).convert_alpha()
+        self.image = pygame.image.load(self.image_src)
         self.rect = self.image.get_rect()
     
     def draw(self, screen: pygame.Surface, pos: tuple):
@@ -143,14 +143,14 @@ class Button():
         mouse_pos = pygame.mouse.get_pos()
 
         if self.rect.collidepoint(mouse_pos):
-            self.image = pygame.image.load(self.hover_image_src).convert_alpha()
+            self.image = pygame.image.load(self.hover_image_src)
             self.rect = self.image.get_rect()
             self.rect.center = pos
             screen.blit(self.image, self.rect)
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
             
         else:
-            self.image = pygame.image.load(self.image_src).convert_alpha()
+            self.image = pygame.image.load(self.image_src)
             self.rect = self.image.get_rect()
             self.rect.center = pos
             screen.blit(self.image, self.rect)
