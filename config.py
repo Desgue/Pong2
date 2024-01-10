@@ -23,6 +23,7 @@ BALL_BORDER = 18
 RADIUS = 18
 BALL_VELOCITY = 16
 
+HIGHSCORE_PATH = "highscore.json"
 PLAY_BUTTON_SM = "assets/png/Buttons/Rect-Medium/PlayIcon/Default.png"
 PLAY_BUTTON_SM_HOVER = "assets/png/Buttons/Rect-Medium/PlayIcon/Hover.png"
 PLAY_BUTTON_L = "assets/png@2x/Buttons/Rect-Medium/PlayIcon/Default@2x.png"

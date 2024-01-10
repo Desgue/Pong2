@@ -1,5 +1,6 @@
 import pygame
 import random
+import json
 from actors import *
 from config import *
 
@@ -8,6 +9,8 @@ class Scene:
         pygame.font.init()
         self.header_font = pygame.font.SysFont('Copmic Sans MS', 56)
         self.sub_font = pygame.font.SysFont("Comic Sans MS", 30)
+        self.last_score = 0
+        self.high_score = self.get_highscore()
 
     def handle_events(self):
         pass
@@ -15,6 +18,20 @@ class Scene:
         pass
     def update(self):
         pass
+    
+    def get_highscore(self):
+        with open(HIGHSCORE_PATH, "r") as f:
+            data = json.load(f)
+            f.close()
+            return int(data["highscore"])
+        
+    def save_highscore(self, new_score):
+        with open(HIGHSCORE_PATH, "w") as f:
+            data = {"highscore": new_score}
+            json.dump(data, f)
+            f.close()
+        return
+
 
 class Menu_Scene(Scene):
     def __init__(self):
@@ -81,10 +98,15 @@ class Game_Scene(Scene):
 
 
     def draw_scoreboard(self, screen):
-        self.player_score=self.sub_font.render("{}".format(self.player.score),1,pygame.Color("white"))
-        self.enemy_score=self.sub_font.render("{}".format(self.computer.score),1, pygame.Color("white")) 
-        screen.blit(self.player_score,(SCREEN_WIDTH / 4,SCREEN_HEIGHT/4))
-        screen.blit(self.enemy_score,(SCREEN_WIDTH - SCREEN_WIDTH / 4, SCREEN_HEIGHT/4))
+        self.player_score_text =self.sub_font.render("{}".format(self.player.score),1,pygame.Color("white"))
+        screen.blit(self.player_score_text,(SCREEN_WIDTH / 4, SCREEN_HEIGHT/4))
+
+        self.enemy_score_text =self.sub_font.render("{}".format(self.computer.score),1, pygame.Color("white")) 
+        screen.blit(self.enemy_score_text,(SCREEN_WIDTH - SCREEN_WIDTH / 4, SCREEN_HEIGHT/4))
+
+        self.high_score_text = self.sub_font.render("Highscore: {}".format(self.high_score),1, pygame.Color("white"))
+        high_score_text_rect = self.high_score_text.get_rect()
+        screen.blit(self.high_score_text,(SCREEN_WIDTH  / 2  -  high_score_text_rect.centerx, SCREEN_HEIGHT - 200))
     
     def draw_actors(self, screen):
         pygame.draw.rect(screen, PADDLE_COLOR, self.player, border_radius= 8)
@@ -103,12 +125,16 @@ class Game_Scene(Scene):
             case 3: 
                 self.ball.velocity *= 1.01
         return
+    
     def handle_point(self):
         if self.ball.x <= 0:
             self.computer.score += 1
             self.ball.reset(-1)
             if self.computer.score >= self.final_score:
+                if self.player.score > self.high_score:
+                    self.save_highscore(self.player.score)
                 self.game_over = True
+
         if self.ball.x >= SCREEN_WIDTH:
             self.player.score += 1
             self.ball.reset()
