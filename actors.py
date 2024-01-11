@@ -108,11 +108,11 @@ class Ball(pygame.Rect):
         intersectY = self.y
         
         if self.top >= SCREEN_HEIGHT or self.top <= 0:
-            self.velocity *= 1.01
+            self.velocity *= 1.005
             self.dir_y *= -1
         
         if self.colliderect(player):
-            self.velocity *= 1.01
+            self.velocity *= 1.005
             relative_intersectY = (player.y + (player.height/2)) - intersectY
             normalized_relative_intersect_y = relative_intersectY / (player.height/2)
             self.angle = radians(normalized_relative_intersect_y * 60)

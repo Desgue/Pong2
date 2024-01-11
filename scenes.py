@@ -114,14 +114,14 @@ class Game_Scene(Scene):
         pygame.draw.rect(screen, BALL_COLOR, self.ball, border_radius= BALL_BORDER )
     
     def increase_difficulty(self):
-        rand = random.randint(0,5)
+        rand = random.randint(0,6)
         match rand:
             case 0:
-                self.player.height *= 0.90
+                self.player.height -= 16
             case 1: 
                 self.computer.velocity *= 1.05
             case 2:
-                self.computer.height *= 1.10
+                self.computer.height += 16
             case 3: 
                 self.ball.velocity *= 1.01
         return
