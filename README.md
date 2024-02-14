@@ -1,6 +1,6 @@
 # Pong2: My First Game Development Project
 
-Welcome to Pong2, my inaugural game development endeavor! This project showcases the classic Pong experience with an exciting twist – a dynamic difficulty adjustment. As you score points, get ready for surprises: your paddle might shrink, your opponent's paddle could grow, or the ball may speed up. Can you overcome these challenges and emerge victorious?
+This project showcases the classic Pong experience with an exciting twist – a dynamic difficulty adjustment. As you score points, get ready for surprises: your paddle might shrink, your opponent's paddle could grow, or the ball may speed up. Can you overcome these challenges and emerge victorious?
 
 ## Features:
 
