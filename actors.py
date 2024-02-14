@@ -153,14 +153,14 @@ class Button():
             self.rect = self.image.get_rect()
             self.rect.center = pos
             screen.blit(self.image, self.rect)
-            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+            pygame.mouse.set_cursor(pygame.cursors.Cursor(pygame.SYSTEM_CURSOR_HAND))
             
         else:
             self.image = pygame.image.load(self.image_src)
             self.rect = self.image.get_rect()
             self.rect.center = pos
             screen.blit(self.image, self.rect)
-            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+            pygame.mouse.set_cursor(pygame.cursors.arrow)
             
             
     
